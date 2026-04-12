@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdPersonalizer | AI-Driven Landing Page Optimization</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AdPersonalizer</h1>
+            <p>Instantly align your landing page with your ad creative for maximum conversions.</p>
+        </header>
+
+        <section id="inputSection" class="glass-card">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="adCreative">Ad Creative / Description</label>
+                    <textarea id="adCreative" rows="5" placeholder="e.g., Get shredded in 30 days with our elite fitness coaching..."></textarea>
+                    <button id="loadFitnessBtn" class="btn-secondary" style="margin-top: 0.5rem; padding: 0.5rem; font-size: 0.8rem;">Load Sample: Fitness Coach</button>
+                </div>
+                <div class="input-group">
+                    <label for="landingUrl">Landing Page URL</label>
+                    <input type="url" id="landingUrl" placeholder="https://your-landing-page.com">
+                    
+
+                </div>
+            </div>
+            <button id="generateBtn" class="btn-primary">Generate Personalized Page</button>
+            <div id="loader" class="loader">
+                <div class="spinner"></div>
+                <p>Analyzing Creative & Scraping Page...</p>
+            </div>
+        </section>
+
+        <section id="resultSection" class="comparison-section">
+            <div class="actions-top">
+                <button id="startOverBtn" class="btn-secondary">← Start Over</button>
+                <div style="font-weight: 600; color: var(--text-muted);">Side-by-Side Comparison</div>
+            </div>
+            <div class="comparison-grid">
+                <div id="originalSide" class="original">
+                    <div class="side-label original">ORIGINAL CONTENT</div>
+                    <div id="originalContent">
+                        <!-- Content injected here -->
+                    </div>
+                </div>
+                <div id="personalizedSide" class="personalized">
+                    <div class="side-label personalized">PERSONALIZED CONTENT</div>
+                    <div id="personalizedContent">
+                        <!-- Content injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card improvement-section">
+                <h2 style="margin-top: 0;">What changed and why?</h2>
+                <div id="improvementsList" class="improvement-list">
+                    <!-- Bullet points injected here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
