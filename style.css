@@ -7,15 +7,18 @@
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --border: rgba(255, 255, 255, 0.1);
+    --app-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --app-bg: var(--bg-dark);
 }
 
 body {
     margin: 0;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-dark);
+    font-family: var(--app-font);
+    background-color: var(--app-bg);
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 .container {
@@ -38,6 +41,7 @@ header h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.02em;
+    transition: all 0.5s ease;
 }
 
 header p {
@@ -55,6 +59,7 @@ header p {
     padding: 2.5rem;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     margin-bottom: 2rem;
+    transition: all 0.5s ease;
 }
 
 /* Input Styles */
@@ -100,6 +105,68 @@ input:focus, textarea:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 4px var(--primary-glow);
 }
+
+.ad-dropzone {
+    position: relative;
+    border: 2px dashed var(--border);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    background: rgba(15, 23, 42, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.ad-dropzone.dragover {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.ad-dropzone textarea {
+    border: none;
+    background: transparent;
+    border-radius: 0.75rem;
+    box-shadow: none;
+    resize: vertical;
+}
+
+.ad-dropzone textarea:focus {
+    box-shadow: none;
+}
+
+#imagePreviewContainer {
+    position: relative;
+    margin: 0.5rem 1rem 1rem 1rem;
+    align-self: flex-start;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #000;
+}
+
+#adImagePreview {
+    display: block;
+    max-height: 120px;
+    object-fit: contain;
+}
+
+.btn-clear {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.btn-clear:hover { background: #f43f5e; border-color: #f43f5e; }
 
 .btn-primary {
     background: linear-gradient(135deg, var(--primary), var(--secondary));

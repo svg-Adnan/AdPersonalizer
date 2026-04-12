@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Montserrat:wght@400;700;800&family=Playfair+Display:wght@700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -19,8 +19,14 @@
         <section id="inputSection" class="glass-card">
             <div class="input-grid">
                 <div class="input-group">
-                    <label for="adCreative">Ad Creative / Description</label>
-                    <textarea id="adCreative" rows="5" placeholder="e.g., Get shredded in 30 days with our elite fitness coaching..."></textarea>
+                    <label for="adCreative">Ad Creative or Image</label>
+                    <div id="adDropzone" class="ad-dropzone">
+                        <textarea id="adCreative" rows="4" placeholder="Type your text ad here, or paste/drop an image to analyze its visual style..."></textarea>
+                        <div id="imagePreviewContainer" class="hidden">
+                            <img id="adImagePreview" src="" alt="Ad Image Preview">
+                            <button id="clearImageBtn" type="button" class="btn-clear" title="Remove image">&times;</button>
+                        </div>
+                    </div>
                     <button id="loadFitnessBtn" class="btn-secondary" style="margin-top: 0.5rem; padding: 0.5rem; font-size: 0.8rem;">Load Sample: Fitness Coach</button>
                 </div>
                 <div class="input-group">

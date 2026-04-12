@@ -7,7 +7,8 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(__dirname)); // Serve static files (frontend)
 
 const PORT = 3002;
@@ -18,7 +19,39 @@ class AIService {
         this.groq = apiKey ? new Groq({ apiKey }) : null;
     }
 
-    async analyzeAndPersonalize(adCreative, originalContent) {
+    async analyzeImageWithVision(imageBase64) {
+        if (!this.groq) return "Mock Vision Ad Details: Intense fitness characters, bold muscular definition, dark high-contrast lighting, aggressive and motivational copy.";
+        try {
+            const completion = await this.groq.chat.completions.create({
+                messages: [
+                    {
+                        role: "user",
+                        content: [
+                            { type: "text", text: "Describe the ad copy, the characters, the visual art style, the overall tone, and the core promise from this image. Be highly specific so we can use this to adapt a landing page's copy to match this style." },
+                            { type: "image_url", image_url: { url: imageBase64 } }
+                        ]
+                    }
+                ],
+                model: "meta-llama/llama-4-scout-17b-16e-instruct"
+            });
+            return completion.choices[0].message.content;
+        } catch (error) {
+            console.error('Groq Vision API Error:', error);
+            return "Vision Analysis Failed or Unavailable.";
+        }
+    }
+
+    async analyzeAndPersonalize(adCreativeText, adImageBase64, originalContent) {
+        let combinedAdCreative = adCreativeText || "";
+        
+        if (adImageBase64) {
+            console.log("Analyzing image with Vision...");
+            const visionContext = await this.analyzeImageWithVision(adImageBase64);
+            combinedAdCreative += `\n\n[IMAGE VISUAL CONTEXT EXTRACTED BY VISION AI]\n${visionContext}`;
+        }
+
+        const adCreative = combinedAdCreative.trim();
+
         if (!this.groq) {
             console.warn('No Groq API key provided. Falling back to simulation.');
             return this.mockPersonalize(adCreative, originalContent);
@@ -43,6 +76,7 @@ class AIService {
             3. Keep the same structure. Do not change the layout.
             4. Provide "What changed and why" as a list of bullet points explaining specific CRO improvements (e.g. "Aligned headline with ad promise to reduce bounce").
             5. Ensure outputs are concise, specific, and conversion-focused. Do not use generic placeholders.
+            6. UI Skinning: Define an "appTheme" that changes the colors and typography of the AdPersonalizer app itself to match the ad's visual style. Pick a fontFamily from: 'Inter', 'Montserrat', 'Playfair Display', or 'Roboto Mono'.
             
             OUTPUT JSON FORMAT:
             {
@@ -54,6 +88,13 @@ class AIService {
                     ...
                 ],
                 "reasoning": ["...", "...", "..."],
+                "appTheme": {
+                    "primaryColor": "Hex",
+                    "secondaryColor": "Hex",
+                    "backgroundColor": "Hex",
+                    "cardBg": "RGBA",
+                    "fontFamily": "Inter | Montserrat | Playfair Display | Roboto Mono"
+                },
                 "analysis": {
                     "audience": "...",
                     "promise": "...",
@@ -65,7 +106,7 @@ class AIService {
 
             const completion = await this.groq.chat.completions.create({
                 messages: [{ role: 'user', content: prompt }],
-                model: 'llama3-70b-8192', // Using larger model for better CRO insights
+                model: 'llama-3.3-70b-versatile', // Update to active model
                 response_format: { type: 'json_object' }
             });
 
@@ -92,6 +133,13 @@ class AIService {
                 "Adjusted subheadline to validate user intent instead of stating generic features.",
                 "Modified section messaging to carry the ad's narrative through the entire page experience."
             ],
+            appTheme: {
+                primaryColor: "#f43f5e",
+                secondaryColor: "#fb923c",
+                backgroundColor: "#0f172a",
+                cardBg: "rgba(30, 41, 59, 0.7)",
+                fontFamily: "Montserrat"
+            },
             analysis: {
                 audience: "Audience derived from ad intent",
                 promise: adWords,
@@ -165,16 +213,16 @@ async function scrapeLandingPage(url) {
 
 // --- Endpoints ---
 app.post('/api/personalize', async (req, res) => {
-    const { url, adCreative } = req.body;
+    const { url, adCreative, adImage } = req.body;
 
-    if (!adCreative) {
-        return res.status(400).json({ error: 'Ad Creative is required' });
+    if (!adCreative && !adImage) {
+        return res.status(400).json({ error: 'Ad Creative or Image is required' });
     }
 
     try {
         const originalContent = await scrapeLandingPage(url);
         const aiService = new AIService();
-        const result = await aiService.analyzeAndPersonalize(adCreative, originalContent);
+        const result = await aiService.analyzeAndPersonalize(adCreative, adImage, originalContent);
 
         res.json({
             original: originalContent,
