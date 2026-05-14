@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdPersonalizer | AI-Driven Landing Page Optimization</title>
+    <meta name="description" content="Instantly align your landing page with your ad creative for maximum conversions using AI-powered analysis and personalization.">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,14 +33,50 @@
                 <div class="input-group">
                     <label for="landingUrl">Landing Page URL</label>
                     <input type="url" id="landingUrl" placeholder="https://your-landing-page.com">
-                    
-
                 </div>
             </div>
             <button id="generateBtn" class="btn-primary">Generate Personalized Page</button>
-            <div id="loader" class="loader">
-                <div class="spinner"></div>
-                <p>Analyzing Creative & Scraping Page...</p>
+
+            <!-- Pipeline Progress -->
+            <div id="pipelineProgress" class="pipeline-progress hidden">
+                <h3 class="progress-title">AI Pipeline Running</h3>
+                <div class="progress-stages">
+                    <div class="stage-item" data-stage="scraping">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Scraping Landing Page</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="ad_analysis">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Analyzing Ad Creative</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="landing_analysis">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Analyzing Landing Page</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="tone_matching">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Matching Tone</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="copy_generation">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Generating Copy</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="theme_generation">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Generating Theme</span>
+                        <span class="stage-status"></span>
+                    </div>
+                    <div class="stage-item" data-stage="evaluation">
+                        <div class="stage-indicator"></div>
+                        <span class="stage-label">Scoring Output</span>
+                        <span class="stage-status"></span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -48,27 +85,59 @@
                 <button id="startOverBtn" class="btn-secondary">← Start Over</button>
                 <div style="font-weight: 600; color: var(--text-muted);">Side-by-Side Comparison</div>
             </div>
+
+            <!-- Evaluation Scores -->
+            <div id="evaluationSection" class="glass-card eval-section">
+                <h2 class="eval-title">AI Quality Scores</h2>
+                <div class="eval-grid">
+                    <div class="eval-card" id="evalToneMatch">
+                        <div class="eval-score">—</div>
+                        <div class="eval-bar"><div class="eval-bar-fill"></div></div>
+                        <div class="eval-label">Tone Match</div>
+                    </div>
+                    <div class="eval-card" id="evalCtaStrength">
+                        <div class="eval-score">—</div>
+                        <div class="eval-bar"><div class="eval-bar-fill"></div></div>
+                        <div class="eval-label">CTA Strength</div>
+                    </div>
+                    <div class="eval-card" id="evalEmotional">
+                        <div class="eval-score">—</div>
+                        <div class="eval-bar"><div class="eval-bar-fill"></div></div>
+                        <div class="eval-label">Emotional Consistency</div>
+                    </div>
+                    <div class="eval-card" id="evalOverall">
+                        <div class="eval-score eval-score-main">—</div>
+                        <div class="eval-bar"><div class="eval-bar-fill"></div></div>
+                        <div class="eval-label">Overall Score</div>
+                    </div>
+                </div>
+                <div id="evalFeedback" class="eval-feedback"></div>
+            </div>
+
             <div class="comparison-grid">
                 <div id="originalSide" class="original">
                     <div class="side-label original">ORIGINAL CONTENT</div>
-                    <div id="originalContent">
-                        <!-- Content injected here -->
-                    </div>
+                    <div id="originalContent"></div>
                 </div>
                 <div id="personalizedSide" class="personalized">
                     <div class="side-label personalized">PERSONALIZED CONTENT</div>
-                    <div id="personalizedContent">
-                        <!-- Content injected here -->
-                    </div>
+                    <div id="personalizedContent"></div>
                 </div>
             </div>
 
             <div class="glass-card improvement-section">
                 <h2 style="margin-top: 0;">What changed and why?</h2>
-                <div id="improvementsList" class="improvement-list">
-                    <!-- Bullet points injected here -->
-                </div>
+                <div id="improvementsList" class="improvement-list"></div>
             </div>
+        </section>
+
+        <!-- History Panel -->
+        <section id="historySection" class="glass-card history-section">
+            <div class="history-header">
+                <h2>Generation History</h2>
+                <button id="toggleHistoryBtn" class="btn-secondary btn-sm">Show History</button>
+            </div>
+            <div id="historyList" class="history-list hidden"></div>
         </section>
     </div>
 
